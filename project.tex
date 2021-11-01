@@ -1,0 +1,51 @@
+\documentclass[a4paper, 10pt, oneside]{memoir}
+
+\usepackage{project}
+
+% Settings.
+\addbibresource[]{project.bib}
+\graphicspath{{figures/}}
+
+% Title page.
+\title          {Project Title}
+\thesistype     {Project Type}
+
+\department     {Department of Mathematics and Computer Science}
+\faculty        {Natural Science Faculty of the University of Basel}
+\research       {Group Name \\\url{https://your.group.url.ch}}
+
+\examiner       {Prof. Dr. Your Examiner}
+\supervisor     {Your Supervisor, MSc.}
+
+\authors        {Your Name}
+\email          {your.mail@unibas.ch}
+\immatnr        {01-234-567}
+\date           {1st January 2000}
+
+\logo           {template/logo-en}
+
+\begin{document}
+
+    \pagestyle{thesis}
+
+    \thesisfront
+    \maketitle
+    \thesistoc
+
+    \thesismain
+    \input{./chapters/Introduction.tex}
+    \input{./chapters/Foundations.tex}
+    \input{./chapters/Evaluation.tex}
+    \input{./chapters/RelatedWork.tex}
+    \input{./chapters/Conclusions.tex}
+
+    \thesisapp
+    \thesisbib
+    \begin{appendices}
+%        \input{./back/AppendixA}
+    \end{appendices}
+
+    \thesisback
+    \includepdf{./back/DoA}
+
+\end{document}

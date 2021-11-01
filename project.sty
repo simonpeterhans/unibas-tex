@@ -1,0 +1,234 @@
+% Required packages.
+\RequirePackage[ngerman, english]{babel}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage[hang]{footmisc}
+\RequirePackage{chngcntr}
+\RequirePackage{amsmath}
+\RequirePackage{url}
+\RequirePackage{pdfpages}
+\RequirePackage[pdfpagemode={UseOutlines}, bookmarks=true, bookmarksopen=true,
+    bookmarksopenlevel=0, bookmarksnumbered=true, hypertexnames=false,
+    colorlinks, linkcolor={black}, citecolor={black}, urlcolor={black}, filecolor={black},
+    pdfstartview={FitV}, breaklinks=true, unicode]{hyperref}
+\RequirePackage[capitalize]{cleveref}
+\RequirePackage[backend=biber, bibstyle=ieee, dashed=false, citestyle=numeric,
+    sorting=none, maxnames=6, minnames=1, maxcitenames=2]{biblatex}
+
+% Margins.
+\setlrmarginsandblock{3.5cm}{3.5cm}{*}
+\setulmarginsandblock{3.5cm}{3.5cm}{*}
+\checkandfixthelayout
+
+% Line spacing.
+\OnehalfSpacing
+\raggedbottom
+
+% Paragraph settings.
+\setlength{\parindent}{16pt}
+\setlength{\parskip}{0pt}
+
+% Fonts: phv = Helvetica, pcr = Courier.
+\renewcommand{\sfdefault}{phv}
+\renewcommand{\ttdefault}{pcr}
+
+% URLs should have same style as text.
+\urlstyle{same}
+
+% Clear double pages (custom for twosided).
+% @formatter:off
+\def\cleardoublepage{
+    \clearpage
+    \if@twoside
+    \ifodd\c@page
+    \else\hbox{}\thispagestyle{empty}\newpage
+    \if@twocolumn\hbox{}\newpage\fi
+    \fi
+    \fi
+}
+% @formatter:on
+
+% Temporary command to store \cleardoublepage as it will get overwritten several times by the following commands.
+\newcommand*{\cleardoublepagecopy}{}
+\let\cleardoublepagecopy\cleardoublepage
+
+% Document organization.
+\setsecnumdepth{subsubsection}
+\setcounter{tocdepth}{3}
+\newcounter{toccounter}
+\newcommand\addtotoc[1]{
+    \refstepcounter{toccounter}
+    \addcontentsline{toc}{chapter}{#1}
+}
+
+\newcommand*{\thesisfront}{
+    \frontmatter
+    \let\cleardoublepage\clearpage
+}
+\newcommand*{\thesismain}{
+    \addtocontents{toc}
+    {\vspace{2em}}
+    \mainmatter
+    \let\cleardoublepage\cleardoublepagecopy
+}
+
+\newcommand*{\thesisapp}{
+    \addtocontents{toc}
+    {\vspace{2em}}
+    \appendix
+    \let\cleardoublepage\clearpage
+}
+\newcommand*{\thesisback}{
+    \addtocontents{toc}
+    {\vspace{2em}}
+    \backmatter
+    \let\cleardoublepage\clearpage
+}
+
+% Floats.
+\captionstyle{\raggedright}
+\setfloatlocations{figure}{ht!}
+\setlength{\intextsep}{10pt}
+\setlength{\textfloatsep}{10pt}
+\newsubfloat{figure}
+
+% Page style (header & footer).
+\nouppercaseheads
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}{}}
+
+\makepagestyle{thesis}
+\makeevenhead{thesis}{\leftmark}{}{\thepage}
+\makeoddhead{thesis}{\leftmark}{}{\thepage}
+\makeheadrule{thesis}{\textwidth}{0.2pt}
+\makeevenfoot{thesis}{}{}{}
+\makeoddfoot{thesis}{}{}{}
+
+% Footnotes.
+\setlength{\skip\footins}{20pt}
+\setlength{\footnotemargin}{10pt}
+% Keep numbering through chapters.
+\counterwithout{footnote}{chapter}
+
+% Title page.
+\newcommand{\thesistype}[1]{\newcommand{\thesistypelabel}{#1}}
+\newcommand{\authors}[1]{\newcommand{\authorslabel}{#1}}
+\newcommand{\email}[1]{\newcommand{\emaillabel}{#1}}
+\newcommand{\supervisor}[1]{\newcommand{\supervisorlabel}{#1}}
+\newcommand{\examiner}[1]{\newcommand{\examinerlabel}{#1}}
+\newcommand{\department}[1]{\newcommand{\departmentlabel}{#1}}
+\newcommand{\faculty}[1]{\newcommand{\facultylabel}{#1}}
+\newcommand{\research}[1]{\newcommand{\researchgrouplabel}{#1}}
+\newcommand{\logo}[1]{\newcommand{\logopath}{#1}}
+\newcommand{\immatnr}[1]{\newcommand{\immatnrlabel}{#1}}
+
+\renewcommand\maketitle{
+    \hypersetup{pdftitle={\@title}}
+    \hypersetup{pdfauthor=\authorslabel}
+    \thispagestyle{empty}
+    {\raggedright\includegraphics{\logopath}\par}
+    \begin{center}
+        \vspace{3cm}
+        {\Huge\sffamily\bfseries\@title\par}
+        \vspace{0.5cm}
+        {\thesistypelabel\par}
+        \vspace{3cm}
+        {\facultylabel\par}
+        {\departmentlabel\par}
+        {\researchgrouplabel\par}
+        \vspace{1.5cm}
+        {{Examiner}: \examinerlabel\par}
+        {{Supervisor}: \supervisorlabel\par}
+        \vspace{1.5cm}
+        {\authorslabel\par}
+        {\emaillabel\par}
+        {\immatnrlabel\par}
+        \vfill
+        {\@date\par}
+    \end{center}
+}
+
+% Chapters.
+\copypagestyle{chapter}{empty}
+
+\definecolor{chaptercolor}{rgb}{.7,.7,.7}
+
+\setlength{\beforechapskip}{50pt}
+\setlength{\afterchapskip}{1pt}
+\setlength{\midchapskip}{20mm}
+
+\newcommand*{\colorchapnumber}{\color{chaptercolor}}
+\newcommand*{\fontchapnumber}{\usefont{T1}{phv}{b}{n}\fontsize{100}{130}\selectfont}
+\newcommand*{\fontchaptitle}{\sffamily\bfseries\huge}
+
+\renewcommand*{\afterchapternum}{}
+\renewcommand*{\printchaptername}{}
+\renewcommand*{\chapternamenum}{}
+\renewcommand*{\printchapternum}{\raggedleft{\colorchapnumber\fontchapnumber\thechapter}\par}
+\renewcommand*{\printchaptertitle}[1]{\raggedleft\fontchaptitle{#1}\par\vspace{30pt}\nobreak}
+
+% Sections, subsections, subsubsections.
+\setsecheadstyle{\sffamily\Large}
+\setbeforesecskip{25pt}
+\setaftersecskip{1pt}
+
+\setsubsecheadstyle{\sffamily\large}
+\setbeforesubsecskip{20pt}
+\setaftersubsecskip{1pt}
+
+\setsubsubsecheadstyle{\sffamily\normalsize}
+\setbeforesubsubsecskip{20pt}
+\setaftersubsubsecskip{1pt}
+
+% Table of Contents.
+\newcommand*{\thesistoc}{
+    \cleardoublepage
+    \renewcommand*{\contentsname}{Table of Contents}
+    \createplainmark{toc}{both}{Table of Contents}
+    \currentpdfbookmark{Table of Contents}{toc}
+    \tableofcontents*% The * prevents the TOC from adding an entry for itself.
+}
+
+% Appendix (add "Appendix" to appendix chapters).
+\renewcommand*{\cftappendixname}{Appendix\space}
+
+% Bibliography.
+\newcommand*{\thesisbib}{
+    \cleardoublepage
+    \renewcommand*{\contentsname}{Bibliography}
+    \createplainmark{bib}{both}{Bibliography}
+    \printbibliography
+}
+
+% Change DOI typesetting to doi.
+\DeclareFieldFormat{doi}{{{\space}doi\addcolon\space}% Don't move this to newline or we'll have excess spaces.
+    \ifhyperref
+    {\lowercase{\href{https://doi.org/#1}{\nolinkurl{#1}}}}
+    {\lowercase{\nolinkurl{#1}}}
+}
+
+% Remove period if DOI is not given (= use a link instead).
+\renewcommand*{\finentrypunct}{
+    \ifboolexpr{togl{bbx:doi} and test{\iffieldundef{doi}}}
+    {}% Do nothing if no DOI.
+    {\addperiod}%Add period after DOI.
+}
+
+% Redefine macro to print a comma instead of a dot when using DOI.
+% Original definition in: /usr/share/texlive/texmf-dist/tex/latex/biblatex-ieee/ieee.bbx
+% (Or in a similar path depending on your tex installation.)
+\renewbibmacro*{doi+eprint+url}{
+    \setunit{\addcomma}% Use comma here instead of space.
+    \iftoggle{bbx:doi}
+    {\printfield{doi}}
+    {}
+    \setunit{\adddot\addspace}
+    \iftoggle{bbx:eprint}
+    {\usebibmacro{eprint}}
+    {}
+    \setunit{\adddot\addspace}
+    \iftoggle{bbx:url}
+    {\usebibmacro{url+urldate}}
+    {}
+}
